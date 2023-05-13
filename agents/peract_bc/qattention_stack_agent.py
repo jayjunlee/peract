@@ -6,8 +6,8 @@ from yarr.agents.agent import Agent, ActResult, Summary
 
 import numpy as np
 
-from helpers import utils
-from agents.peract_bc.qattention_peract_bc_agent import QAttentionPerActBCAgent
+from ...helpers import utils
+from ...agents.peract_bc.qattention_peract_bc_agent import QAttentionPerActBCAgent
 
 NAME = 'QAttentionStackAgent'
 

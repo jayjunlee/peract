@@ -12,15 +12,15 @@ from pytorch3d import transforms as torch3d_tf
 from yarr.agents.agent import Agent, ActResult, ScalarSummary, \
     HistogramSummary, ImageSummary, Summary
 
-from helpers import utils
-from helpers.utils import visualise_voxel, stack_on_channel
-from voxel.voxel_grid import VoxelGrid
-from voxel.augmentation import apply_se3_augmentation
+from ...helpers import utils
+from ...helpers.utils import visualise_voxel, stack_on_channel
+from ...voxel.voxel_grid import VoxelGrid
+from ...voxel.augmentation import apply_se3_augmentation
 from einops import rearrange
-from helpers.clip.core.clip import build_model, load_clip
+from ...helpers.clip.core.clip import build_model, load_clip
 
 import transformers
-from helpers.optim.lamb import Lamb
+from ...helpers.optim.lamb import Lamb
 
 from torch.nn.parallel import DistributedDataParallel as DDP
 
@@ -96,12 +96,12 @@ class QFunction(nn.Module):
         # forward pass
         q_trans, \
         q_rot_and_grip,\
-        q_ignore_collisions = self._qnet(voxel_grid, 
+        q_ignore_collisions = self._qnet(voxel_grid,
                                          proprio,
-                                         lang_goal_emb, 
+                                         lang_goal_emb,
                                          lang_token_embs,
                                          prev_layer_voxel_grid,
-                                         bounds, 
+                                         bounds,
                                          prev_bounds)
 
         return q_trans, q_rot_and_grip, q_ignore_collisions, voxel_grid
