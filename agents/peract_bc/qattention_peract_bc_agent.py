@@ -658,6 +658,8 @@ class QAttentionPerActBCAgent(Agent):
         for k, v in state_dict.items():
             if not self._training:
                 k = k.replace('_qnet.module', '_qnet')
+            if '_voxelizer' in k:
+                continue
             if k in merged_state_dict:
                 merged_state_dict[k] = v
             else:
