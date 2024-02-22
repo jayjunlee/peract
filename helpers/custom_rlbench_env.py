@@ -330,10 +330,13 @@ class CustomMultiTaskRLBenchEnv(MultiTaskRLBenchEnv):
             reward = 0.0
 
             if isinstance(e, IKError):
+                print("IKError")
                 self._error_type_counts['IKError'] += 1
             elif isinstance(e, ConfigurationPathError):
+                print("ConfigurationPathError")
                 self._error_type_counts['ConfigurationPathError'] += 1
             elif isinstance(e, InvalidActionError):
+                print("InvalidActionError")
                 self._error_type_counts['InvalidActionError'] += 1
 
             self._last_exception = e
