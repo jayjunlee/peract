@@ -1,4 +1,5 @@
 from typing import Type, List
+import traceback
 
 import numpy as np
 from rlbench import ObservationConfig, ActionMode
@@ -279,7 +280,7 @@ class CustomMultiTaskRLBenchEnv(MultiTaskRLBenchEnv):
             cam_placeholder = Dummy('cam_cinematic_placeholder')
             cam_base = Dummy('cam_cinematic_base')
             cam_base.rotate([0, 0, np.pi * 0.75])
-            self._record_cam = VisionSensor.create([320, 180])
+            self._record_cam = VisionSensor.create([512, 512])
             self._record_cam.set_explicit_handling(True)
             self._record_cam.set_pose(cam_placeholder.get_pose())
             self._record_cam.set_render_mode(RenderMode.OPENGL)
@@ -336,7 +337,9 @@ class CustomMultiTaskRLBenchEnv(MultiTaskRLBenchEnv):
                 print("ConfigurationPathError")
                 self._error_type_counts['ConfigurationPathError'] += 1
             elif isinstance(e, InvalidActionError):
-                print("InvalidActionError")
+                print(f"Exception type: {type(e).__name__}, Message: {e}")
+                print(type(e))
+                # traceback.print_exc()
                 self._error_type_counts['InvalidActionError'] += 1
 
             self._last_exception = e
@@ -361,6 +364,7 @@ class CustomMultiTaskRLBenchEnv(MultiTaskRLBenchEnv):
                 self._last_exception = None
 
             summaries.append(TextSummary('errors', f"Success: {success} | " + error_str))
+        # self._task.get_privileged_info()
         return Transition(obs, reward, terminal, summaries=summaries)
 
     def reset_to_demo(self, i, variation_number=-1):
