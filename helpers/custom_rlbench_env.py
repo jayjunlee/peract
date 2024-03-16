@@ -1,5 +1,6 @@
 from typing import Type, List
 import traceback
+import copy
 
 import numpy as np
 from rlbench import ObservationConfig, ActionMode
@@ -137,6 +138,7 @@ class CustomRLBenchEnv(RLBenchEnv):
 
         try:
             obs, reward, terminal = self._task.step(action)
+            obs_copy = copy.deepcopy(obs)
             if reward >= 1:
                 success = True
                 reward *= self._reward_scale
@@ -176,7 +178,7 @@ class CustomRLBenchEnv(RLBenchEnv):
                 self._last_exception = None
 
             summaries.append(TextSummary('errors', f"Success: {success} | " + error_str))
-        return Transition(obs, reward, terminal, summaries=summaries)
+        return Transition(obs, reward, terminal, summaries=summaries), obs_copy
 
     def reset_to_demo(self, i):
         self._i = 0
@@ -319,6 +321,7 @@ class CustomMultiTaskRLBenchEnv(MultiTaskRLBenchEnv):
 
         try:
             obs, reward, terminal = self._task.step(action)
+            obs_copy = copy.deepcopy(obs)
             if reward >= 1:
                 success = True
                 reward *= self._reward_scale
@@ -365,7 +368,7 @@ class CustomMultiTaskRLBenchEnv(MultiTaskRLBenchEnv):
 
             summaries.append(TextSummary('errors', f"Success: {success} | " + error_str))
         # self._task.get_privileged_info()
-        return Transition(obs, reward, terminal, summaries=summaries)
+        return Transition(obs, reward, terminal, summaries=summaries), obs_copy
 
     def reset_to_demo(self, i, variation_number=-1):
         if self._episodes_this_task == self._swap_task_every:
