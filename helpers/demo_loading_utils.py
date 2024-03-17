@@ -37,8 +37,7 @@ def keypoint_discovery(demo: Demo,
         if len(episode_keypoints) > 1 and (episode_keypoints[-1] - 1) == \
                 episode_keypoints[-2]:
             episode_keypoints.pop(-2)
-        logging.debug('Found %d keypoints.' % len(episode_keypoints),
-                      episode_keypoints)
+        logging.debug(f'Found {len(episode_keypoints)} keypoints.')
         return episode_keypoints
 
     elif method == 'random':
