@@ -332,6 +332,7 @@ class CustomMultiTaskRLBenchEnv(MultiTaskRLBenchEnv):
         except (IKError, ConfigurationPathError, InvalidActionError) as e:
             terminal = True
             reward = 0.0
+            obs_copy = None
 
             if isinstance(e, IKError):
                 print("IKError")
