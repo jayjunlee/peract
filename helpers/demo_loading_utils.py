@@ -31,8 +31,6 @@ def keypoint_discovery(demo: Demo,
         prev_gripper_open = demo[0].gripper_open
         stopped_buffer = 0
         for i, obs in enumerate(demo):
-            print(i, obs.gripper_open)
-            print(dir(obs))
 
             stopped = _is_stopped(demo, i, obs, stopped_buffer, stopping_delta)
             stopped_buffer = 4 if stopped else stopped_buffer - 1
@@ -79,20 +77,15 @@ def keypoint_discovery_v2(demo: Demo,
     if method == 'heuristic':
         prev_gripper_open = demo[0].gripper_open
         stopped_buffer = 0
-        force_vec = np.array([0, 0, 0, 0 ,0 , 0])
         for i, obs in enumerate(demo):
             stopped = _is_stopped(demo, i, obs, stopped_buffer, stopping_delta)
             stopped_buffer = 4 if stopped else stopped_buffer - 1
             # If change in gripper, or end of episode.
             last = i == (len(demo) - 1)
-            # print(dir(obs))
-            print(i, np.sum(np.abs(obs.gripper_touch_forces)), obs.gripper_open)
             gripper_open = is_gripper_open(obs.gripper_joint_positions)
             if np.sum(np.abs(obs.gripper_touch_forces)) > 0.7 and gripper_open is True:
-                demo[i].gripper_open = False
                 gripper_open = False
             if i != 0 and (gripper_open != prev_gripper_open or last or stopped):
-                # print(obs.gripper_open, prev_gripper_open)
                 episode_keypoints.append(i)
             prev_gripper_open = gripper_open
         if len(episode_keypoints) > 1 and (episode_keypoints[-1] - 1) == episode_keypoints[-2]:
