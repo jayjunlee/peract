@@ -18,7 +18,7 @@ def _is_stopped(demo, i, obs, stopped_buffer, delta=0.1):
     return stopped
 
 def is_gripper_open(gripper_joint_positions):
-    if gripper_joint_positions[0] < 0.0399 and gripper_joint_positions[1] < 0.0399:
+    if gripper_joint_positions[0] < 0.0398 and gripper_joint_positions[1] < 0.0398:
         return False
     else:
         return True
@@ -83,6 +83,7 @@ def keypoint_discovery_v2(demo: Demo,
             # If change in gripper, or end of episode.
             last = i == (len(demo) - 1)
             gripper_open = is_gripper_open(obs.gripper_joint_positions)
+            # print(i, obs.gripper_joint_positions, np.sum(np.abs(obs.gripper_touch_forces)), gripper_open)
             if np.sum(np.abs(obs.gripper_touch_forces)) > 0.7 and gripper_open is True:
                 gripper_open = False
             if i != 0 and (gripper_open != prev_gripper_open or last or stopped):
