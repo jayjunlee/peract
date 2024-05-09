@@ -18,7 +18,7 @@ def _is_stopped(demo, i, obs, stopped_buffer, delta=0.1):
     return stopped
 
 def is_gripper_open(gripper_joint_positions):
-    if gripper_joint_positions[0] < 0.0398 and gripper_joint_positions[1] < 0.0398:
+    if gripper_joint_positions[0] < 0.0398 or gripper_joint_positions[1] < 0.0398:
         return False
     else:
         return True
